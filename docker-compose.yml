@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  marklogic:
+    image: store/marklogicdb/marklogic-server:10.0-4-dev-centos
+    environment:
+      - MARKLOGIC_INIT=true
+      - MARKLOGIC_ADMIN_USERNAME=admin
+      - MARKLOGIC_ADMIN_PASSWORD=admin
+    volumes:
+      - 'marklogic:/var/opt/MarkLogic'
+    ports:
+      - "8000-8002:8000-8002/tcp"
+      - "8010-8011:8010-8011/tcp"
+      - "8013:8013/tcp"
+    expose:
+      - "7997"
+      - "7998"
+      - "7999"
+    hostname: "ml"
+    container_name: "ml"
+  jupyter:
+    build: 
+      context: .
+      dockerfile: jupyter/Dockerfile
+    environment:
+      - JUPYTER_TOKEN=admin
+    volumes:
+      - ./jupyter:/home/jovyan/work
+      - ./marklogic_ext:/home/jovyan/work/marklogic_ext
+    ports:
+      - "9999:8888"
+    expose:
+      - "8888"
+    hostname: "jupyter"
+    container_name: "jupyter"
+volumes:
+  marklogic:
+  

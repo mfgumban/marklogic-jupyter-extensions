@@ -1,0 +1,53 @@
+plugins { 
+  id "com.marklogic.ml-gradle" version "4.0.3" 
+}
+
+repositories {
+  jcenter()
+  maven { url "http://developer.marklogic.com/maven2/" }
+}
+
+configurations {
+	mlcp
+}
+
+dependencies {
+	mlcp "com.marklogic:mlcp:10.0.4"
+
+	/**
+	 * mlcp uses Log4j for logging, and if Log4j can't find a configuration file, it will complain and you'll
+	 * get none of mlcp's usually-useful logging. It is recommended then that your Gradle configuration for
+	 * mlcp include a directory or some other resource that provides a log4j.properties file.
+	 */
+	mlcp files("lib")
+}
+
+task loadMockData(type: com.marklogic.gradle.task.MlcpTask) {
+  classpath = configurations.mlcp
+  command = "IMPORT"
+  port = mlAppConfig.restPort
+  database = mlAppConfig.contentDatabaseName
+  input_file_path = "data/mock"
+  input_file_type = "delimited_text"
+  document_type = "json"
+  uri_id = "id"
+  output_collections = "mock-data"
+  output_permissions = "rest-reader,read,rest-writer,update"
+  output_uri_prefix = "/mock-data/"
+  output_uri_suffix = ".json"
+}
+
+task loadSampleData(type: com.marklogic.gradle.task.MlcpTask) {
+  classpath = configurations.mlcp
+  command = "IMPORT"
+  port = mlAppConfig.restPort
+  database = mlAppConfig.contentDatabaseName
+  input_file_path = "data/sample"
+  input_file_type = "delimited_text"
+  document_type = "json"
+  uri_id = "No"
+  output_collections = "sample-data"
+  output_permissions = "rest-reader,read,rest-writer,update"
+  output_uri_prefix = "/sample-data/"
+  output_uri_suffix = ".json"
+}
