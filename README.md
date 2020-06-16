@@ -6,7 +6,9 @@ This IPython extension makes it easier to interact with [MarkLogic](http://markl
 
 ## Trying it out
 
-An example notebook is available to quickly check out the extension in action.  To run the example, you'll need the following installed:
+An example notebook is available to quickly check out the extension in action, which can be viewed [here](jupyter/example.ipynb).  
+
+To run the example yourself, you'll need the following installed:
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Gradle](http://gradle.org)
@@ -31,20 +33,20 @@ The extension uses _magic_ functions to extend or change the behavior of noteboo
 
 Add these to a notebook cell to load the extension and connect to a MarkLogic server:
 
-```python
+```
 %load_ext marklogic_ext
 %marklogic_connect http://username:password@hostname:port
 ```
 
 The extension uses digest authentication by default.  If you need to use basic authentication, add the `-basic` option:
 
-```python
+```
 %marklogic_connect http://username:password@hostname:port -basic
 ```
 
 If the server uses SSL, specify `https`:
 
-```python
+```
 %marklogic_connect https://username:password@hostname:port
 ```
 
